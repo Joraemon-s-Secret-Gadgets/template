@@ -9,6 +9,7 @@ on:
     types: [ opened, reopened, synchronize ]
     branches:
       - dev
+      - main
 
 jobs:
   code-review:
@@ -22,6 +23,31 @@ jobs:
           OPENAI_API_ENDPOINT: https://api.openai.com/v1
           LANGUAGE: Korean
           PROMPT: |
+            이 저장소는 Git Flow를 변형한 구조를 사용합니다.
+
+            브랜치 역할:
+              - fork 저장소의 main: 개발 브랜치 역할
+              - org 저장소의 dev: release 브랜치 역할
+              - org 저장소의 main: deploy 브랜치 역할
+
+            이 PR은 다음 중 하나입니다:
+              1. fork/main -> org/dev
+                 - release 후보 검토 단계
+              2. org/dev -> org/main
+                 - 실제 배포 직전 검토 단계
+
+            브랜치 이름보다 역할 기준으로 리뷰해주세요.
+
+            특히 org/main 대상으로 향하는 PR은:
+              - 운영 장애 가능성
+              - 보안 취약점
+              - 데이터 손실 위험
+              - 환경 변수 누락
+              - Docker/Compose 배포 문제
+              - DB 마이그레이션 위험
+              - 롤백 가능 여부
+            를 더 엄격하게 검토해주세요.
+
             이 PR은 CI 테스트를 통과한 이후 리뷰되는 변경입니다.
             테스트가 잡지 못하는 설계, 보안, 유지보수성, 성능, 장애 가능성 중심으로 리뷰해주세요.
 
